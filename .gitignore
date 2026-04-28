@@ -1,0 +1,22 @@
+# Virtual Environment (The heaviest part)
+.venv/
+venv/
+ENV/
+
+# Data and Database
+data/
+*.duckdb
+
+# dbt Artifacts
+dbt/dbt_transformations/target/
+dbt/dbt_transformations/dbt_packages/
+dbt/dbt_transformations/logs/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+
+# IDEs and System
+.vscode/
+.idea/
+.DS_Store

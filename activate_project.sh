@@ -1,0 +1,7 @@
+export AIRFLOW_HOME="/home/khalidabdelrazk/data engineer/e-commerce/airflow_home"
+export DBT_PROFILES_DIR="/home/khalidabdelrazk/data engineer/e-commerce"
+source "/home/khalidabdelrazk/data engineer/e-commerce/.venv/bin/activate"
+echo "--- Environment Activated ---"
+echo "AIRFLOW_HOME: $AIRFLOW_HOME"
+echo "DBT_PROFILES_DIR: $DBT_PROFILES_DIR"
+echo "DUCKDB_PATH: /home/khalidabdelrazk/data engineer/e-commerce/warehouse.duckdb"
