@@ -72,7 +72,7 @@ ecommerce_platform:
     dev:
       type: duckdb
       # Update path to point to your local DuckDB database file
-      path: /home/khalidabdelrazk/data engineer/e-commerce/DataBase.duckdb 
+      path: {YOUR_DUCKDB_PATH} 
       threads: 4
   target: dev
 ```
