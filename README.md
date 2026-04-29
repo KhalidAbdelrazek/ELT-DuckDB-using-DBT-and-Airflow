@@ -1,17 +1,23 @@
 # Olist E-Commerce ELT Pipeline
 
-An end-to-end ELT (Extract, Load, Transform) data pipeline leveraging the Brazilian E-Commerce Public Dataset by Olist. The pipeline orchestrates the ingestion of raw CSV files into a local DuckDB data warehouse, and uses dbt (Data Build Tool) to model the data into robust analytical marts, all orchestrated through Apache Airflow.
+An end-to-end ELT (Extract, Load, Transform) data pipeline leveraging the Brazilian E-Commerce Public Dataset by Olist. This project implements a **Modern Data Stack** architecture designed for efficiency through **Incremental Loading** patterns.
 
 ## Project Overview
 
-This project simulates a modern data stack fully localized on a single machine. It demonstrates key data engineering patterns:
-- **Scalable Ingestion**: Idempotent Python scripts that dynamically load new CSV datasets into a local DuckDB warehouse.
-- **Robust Transformation**: Dedicated dbt layers (Staging -> Marts) utilizing best practices to build a comprehensive star schema and fact/dimension tables.
-- **Reliable Orchestration**: Apache Airflow DAGs that manage job dependencies and define a clear, scheduled execution flow.
+This project simulates a production-ready data ecosystem localized on a single machine. It demonstrates advanced data engineering patterns:
+- **Incremental Ingestion**: State-aware Python scripts that query the warehouse for existing timestamps and only fetch "Delta" records from source CSVs.
+- **Efficient Transformation**: dbt models utilizing `incremental` materialization to merge new data into existing marts without full warehouse rebuilds.
+- **Reliable Orchestration**: Apache Airflow DAGs managing idempotent task execution and job dependencies.
+
+## Key Features
+
+- **State Management**: The pipeline tracks the `MAX(order_purchase_timestamp)` to avoid redundant data processing and minimize I/O overhead.
+- **Atomic Operations**: Ensuring tasks either fail completely or succeed, preventing partial data loads and maintaining warehouse integrity.
+- **Star Schema Architecture**: A highly optimized dimensional model designed to empower BI tools and complex analytical queries.
 
 ## Architecture
 
-The pipeline follows an ELT architecture, with DuckDB serving as the core engine.
+The pipeline follows a modern ELT architecture, with DuckDB serving as the high-performance, columnar analytical engine.
 
 ```mermaid
 flowchart LR
@@ -19,28 +25,27 @@ flowchart LR
         CSV(Olist CSV Files)
     end
     
-    subgraph Ingestion
-        Python[Python Ingestion Script]
+    subgraph Ingestion [Python Layer]
+        Python[Incremental Ingestion Script]
     end
 
-    subgraph Data Warehouse: DuckDB
+    subgraph Data Warehouse [DuckDB]
         Raw(Raw Tables)
-        Staging(Staging Layer - dbt)
-        Marts(Marts Layer - dbt)
+        Staging(Incremental Staging - dbt)
+        Marts(Refined Marts - dbt)
     end
 
-    CSV -- "Read & Clean\nvia Pandas" --> Python
-    Python -- "Insert via \nDuckDB Conn" --> Raw
-    Raw -- "Transform \nvia dbt" --> Staging
-    Staging -- "Aggregate & \nJoin via dbt" --> Marts
-    
     subgraph Orchestration
         Airflow((Apache Airflow))
     end
+
+    CSV -- "Delta Fetch\nvia Pandas" --> Python
+    Python -- "Append/Upsert" --> Raw
+    Raw -- "Incremental Merge" --> Staging
+    Staging -- "Join & Materialize" --> Marts
     
     Airflow -.->|"1. Triggers Ingestion"| Python
-    Airflow -.->|"2. Triggers Transforms"| Staging
-```
+    Airflow -.->|"2. Triggers dbt Build"| Staging
 
 ## Setup Instructions
 
