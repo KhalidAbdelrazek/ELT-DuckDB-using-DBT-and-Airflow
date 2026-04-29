@@ -27,7 +27,6 @@ with DAG(
     # TASK 1: INGESTION
     ingest_data = BashOperator(
         task_id="ingest_csv_to_duckdb",
-        # Added 'cwd' (Current Working Directory)
         cwd=str(PROJECT_ROOT / "ingestion"), 
         bash_command=f"'{VENV_PYTHON}' main.py",
     )
@@ -35,7 +34,6 @@ with DAG(
     # TASK 2: DBT TRANSFORMATIONS
     dbt_transform = BashOperator(
         task_id="dbt_run_transformations",
-        # Added 'cwd' here as well for safety
         cwd=str(DBT_ROOT),
         bash_command=f"'{VENV_DBT}' run --profiles-dir /home/khalidabdelrazk/.dbt",
     )
