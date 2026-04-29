@@ -17,7 +17,7 @@ This project simulates a production-ready data ecosystem localized on a single m
 
 ## Architecture
 
-The pipeline follows a modern ELT architecture, with DuckDB serving as the high-performance, columnar analytical engine.
+The pipeline follows an ELT architecture, with DuckDB serving as the core engine.
 
 ```mermaid
 flowchart LR
@@ -25,28 +25,28 @@ flowchart LR
         CSV(Olist CSV Files)
     end
     
-    subgraph Ingestion [Python Layer]
-        Python[Incremental Ingestion Script]
+    subgraph Ingestion
+        Python[Python Ingestion Script]
     end
 
-    subgraph Data Warehouse [DuckDB]
+    subgraph Data Warehouse: DuckDB
         Raw(Raw Tables)
-        Staging(Incremental Staging - dbt)
-        Marts(Refined Marts - dbt)
+        Staging(Staging Layer - dbt)
+        Marts(Marts Layer - dbt)
     end
 
+    CSV -- "Read & Clean\nvia Pandas" --> Python
+    Python -- "Insert via \nDuckDB Conn" --> Raw
+    Raw -- "Transform \nvia dbt" --> Staging
+    Staging -- "Aggregate & \nJoin via dbt" --> Marts
+    
     subgraph Orchestration
         Airflow((Apache Airflow))
     end
-
-    CSV -- "Delta Fetch\nvia Pandas" --> Python
-    Python -- "Append/Upsert" --> Raw
-    Raw -- "Incremental Merge" --> Staging
-    Staging -- "Join & Materialize" --> Marts
     
     Airflow -.->|"1. Triggers Ingestion"| Python
-    Airflow -.->|"2. Triggers dbt Build"| Staging
-
+    Airflow -.->|"2. Triggers Transforms"| Staging
+```
 ## Setup Instructions
 
 ### 1. Environment Setup
