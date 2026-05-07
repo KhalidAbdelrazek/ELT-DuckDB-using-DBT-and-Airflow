@@ -1,0 +1,7 @@
+local_duckdb:
+  outputs:
+    dev:
+      type: duckdb
+      path: '/home/khalidabdelrazk/projects/workshops/ELT-DuckDB-using-DBT-and-Airflow/warehouse.duckdb'
+      threads: 4
+  target: dev

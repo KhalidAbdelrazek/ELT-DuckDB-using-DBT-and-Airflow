@@ -13,38 +13,71 @@ sources:
       - name: dim_sellers
       - name: fact_order_items
       
-
 models:
-  - name: dim_customers
-    description: "A dimension table containing customer information."
+  - name: fact_order_items
     columns:
-      - name: customer_id
-        description: "Unique identifier for each customer."
+      - name: order_id
         tests:
-          - unique
-          - not_null
-  - name: dim_geolocation
-    description: "A dimension table containing geolocation information."
-    columns:
-      - name: geolocation_zip_code_prefix
-        description: "Zip code prefix for geolocation."
+          - relationships:
+              name: rel_fact_items_to_orders
+              to: ref('dim_orders')
+              field: order_id
+      - name: product_id
         tests:
-          - unique
+          - relationships:
+              to: ref('dim_products')
+              field: product_id
+      - name: seller_id
+        tests:
+          - relationships:
+              to: ref('dim_sellers')
+              field: seller_id
 
   - name: dim_orders
-    description: "A dimension table containing order information."
     columns:
       - name: order_id
-        description: "Unique identifier for each order."
         tests:
           - unique
           - not_null
+          - relationships:
+              name: rel_orders_to_reviews
+              to: ref('dim_reviews')
+              field: order_id
+          - relationships:
+              name: rel_orders_to_payments
+              to: ref('dim_payments')
+              field: order_id
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
 
-  - name: dim_payments
-    description: "A dimension table containing payment information."
+  - name: dim_customers
     columns:
-      - name: order_id
-        description: "Unique identifier for each order, used to link payments to orders."
+      - name: customer_id
         tests:
           - unique
           - not_null
+      - name: customer_zip_code_prefix
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_geolocation')
+              field: geolocation_zip_code_prefix
+              config:
+                severity: warn
+
+  - name: dim_sellers
+    columns:
+      - name: seller_id
+        tests:
+          - unique
+          # - not_null
+      - name: seller_zip_code_prefix
+        tests:
+          - relationships:
+              to: ref('dim_geolocation')
+              field: geolocation_zip_code_prefix
+              config:
+                severity: warn

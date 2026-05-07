@@ -183,3 +183,20 @@ Internal Error
 [0m22:26:02.451845 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d10a1764d60>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d1098969510>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d1098969540>]}
 [0m22:26:02.452345 [debug] [MainThread]: Flushing usage events
 [0m22:26:03.701601 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m02:32:02.394841 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7728360c48b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x772834d3c220>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x772834d3c1c0>]}
+[0m02:32:02.397734 [debug] [MainThread]: An error was encountered while trying to send an event
+
+
+============================== 02:32:02.398336 | 6a30bc6b-1893-4f57-8836-cb62b5d6da50 ==============================
+[0m02:32:02.398336 [info ] [MainThread]: Running with dbt=1.11.9
+[0m02:32:02.399019 [debug] [MainThread]: running dbt with arguments {'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'log_cache_events': 'False', 'write_json': 'True', 'log_path': 'logs', 'static_parser': 'True', 'printer_width': '80', 'send_anonymous_usage_stats': 'True', 'warn_error': 'None', 'empty': 'None', 'cache_selected_only': 'False', 'invocation_command': 'dbt test', 'use_experimental_parser': 'False', 'quiet': 'False', 'use_colors': 'True', 'introspect': 'True', 'profiles_dir': '/home/khalidabdelrazk/.dbt', 'no_print': 'None', 'indirect_selection': 'eager', 'partial_parse': 'True', 'log_format': 'default', 'version_check': 'True', 'debug': 'False', 'target_path': 'None', 'fail_fast': 'False'}
+[0m02:32:02.399724 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /home/khalidabdelrazk/projects/workshops/ELT-DuckDB-using-DBT-and-Airflow/dbt/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m02:32:02.400747 [debug] [MainThread]: Resource report: {"command_name": "test", "command_success": false, "command_wall_clock_time": 0.07279257, "process_in_blocks": "0", "process_kernel_time": 0.083912, "process_mem_max_rss": "99272", "process_out_blocks": "16", "process_user_time": 1.627304}
+[0m02:32:02.401413 [debug] [MainThread]: Command `dbt test` failed at 02:32:02.401300 after 0.07 seconds
+[0m02:32:02.402319 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7728360c48b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x772834d3c940>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x772834d3c220>]}
+[0m02:32:02.403231 [debug] [MainThread]: An error was encountered while trying to send an event
+[0m02:32:02.404080 [debug] [MainThread]: Flushing usage events
